@@ -1,3 +1,18 @@
+#enemy-ship-list {
+    height: 600px;
+    margin-left: 10px;
+}
+
+#game-container {
+    display: flex;
+    /* height: 600px; */
+    /* display: inline-block; */
+}
+
+.ship-item {
+    display: inline;
+}
+
 #board {
     width: 600px;
     height: 600px;

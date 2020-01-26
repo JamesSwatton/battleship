@@ -10,26 +10,11 @@ function createBoard() {
 };
 
 const ships = {
-    c1: {type: 'carrier', size: 5, hits: 0},
-    b1: {type: 'battleship', size: 4, hits: 0},
-    b2: {type: 'battleship', size: 4, hits: 0},
-    cr1: {type: 'cruiser', size: 4, hits: 0},
-    cr2: {type: 'cruiser', size: 4, hits: 0},
-    cr3: {type: 'cruiser', size: 4, hits: 0},
-    s1: {type: 'submarine', size: 3, hits: 0},
-    s2: {type: 'submarine', size: 3, hits: 0},
-    s3: {type: 'submarine', size: 3, hits: 0},
-    s4: {type: 'submarine', size: 3, hits: 0},
-    d1: {type: 'destroyer', size: 2, hits: 0},
-    d2: {type: 'destroyer', size: 2, hits: 0},
-    d3: {type: 'destroyer', size: 2, hits: 0},
-    d4: {type: 'destroyer', size: 2, hits: 0},
-    d5: {type: 'destroyer', size: 2, hits: 0},
-    // {type: 'carrier', size: 5, num: 1},
-    // {type: 'battleship', size: 4, num: 2},
-    // {type: 'cruiser', size: 3, num: 3},
-    // {type: 'submarine', size: 3, num: 4},
-    // {type: 'destroyer', size: 2, num: 5},
+    c: {type: 'carrier', size: 5, hits: 0},
+    b: {type: 'battleship', size: 4, hits: 0},
+    cr: {type: 'cruiser', size: 3, hits: 0},
+    s: {type: 'submarine', size: 3, hits: 0},
+    d: {type: 'destroyer', size: 2, hits: 0},
 };
 
 const horVert = [
@@ -106,8 +91,11 @@ function placeShips() {
     }
 }
 
-function checkForSunk() {
-
+function checkForSunk(ship) {
+        if (ships[ship].hits === ships[ship].size) {
+            console.log(`you sunk a ${ships[ship].type}!`)
+            return true;
+        }
 }
 
 // determine whether player has made a hit
@@ -122,6 +110,11 @@ document.getElementById('board').addEventListener('click', event => {
         ships[ship].hits += 1;
         board[x][y] = "X"
         gridElement.classList.add('hit');
+
+        if (checkForSunk(ship)) {
+            document.querySelector(`#${ship}`).style.backgroundColor = 'black';
+            document.querySelector(`#${ship}`).style.color = 'white';
+        }
         
         console.log(ships);
     }
