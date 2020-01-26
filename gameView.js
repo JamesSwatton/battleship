@@ -5,7 +5,7 @@ const gameView = {
             for (let j = 0; j < 10; j++) {
                 const gridSection = document.createElement('div');
                 gridSection.id = `${i}-${j}`;
-                if (board[i][j] === 1) {
+                if (board[i][j] !== '~') {
                     gridSection.className = 'grid ship';
                 } else {
                     gridSection.className = 'grid water';
@@ -13,5 +13,15 @@ const gameView = {
                 boardContainer.appendChild(gridSection);
             }
         }
+    },
+
+    renderShipList(ships) {
+        for (ship in ships) {
+            const enemyShipList = document.getElementById('enemy-ship-list');  
+            const shipText = document.createElement('p');
+            shipText.textContent = ships[ship].type;
+            enemyShipList.appendChild(shipText);
+        }
     }
+
 }

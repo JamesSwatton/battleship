@@ -96,14 +96,18 @@ function placeShips() {
 
             if (direction === 'horizontal') {
                 for (let i = x; i < (x + ships[ship].size); i++) {
-                    board[y][i] = 1;
+                    board[y][i] = ship;
                 }
             } else if (direction === 'vertical') {
                 for (let i = y; i < (y + ships[ship].size); i++) {
-                    board[i][x] = 1;
+                    board[i][x] = ship;
                 }
             }
     }
+}
+
+function checkForSunk() {
+
 }
 
 // determine whether player has made a hit
@@ -112,11 +116,14 @@ document.getElementById('board').addEventListener('click', event => {
     const clickPosition = event.target.id.split('-');
     const x = +clickPosition[0];
     const y = +clickPosition[1];
-    if (board[x][y] === 1) {
+    if (board[x][y] !== '~') {
+        const ship = board[x][y];
         console.log('HIT');
+        ships[ship].hits += 1;
         board[x][y] = "X"
         gridElement.classList.add('hit');
-
+        
+        console.log(ships);
     }
 })
 
@@ -124,3 +131,6 @@ createBoard();
 placeShips();
 
 gameView.renderBoard(board);
+gameView.renderShipList(ships);
+console.log(board);
+console.log(ships);
