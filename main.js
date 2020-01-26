@@ -1,9 +1,9 @@
 const board = [];
 
 function createBoard() {
-    for (let i = 0; i < 8; i++) {
+    for (let i = 0; i < 10; i++) {
         board[i] = [];
-        for (let j = 0; j < 8; j++) {
+        for (let j = 0; j < 10; j++) {
             board[i][j] = '~';
         }
     }
@@ -11,9 +11,14 @@ function createBoard() {
 
 const ships = [
     [1, 1, 1, 1],
-    [1, 1, 1, 1],
+    [1, 1, 1, 1], 
     [1, 1, 1],
-    [1, 1, 1]
+    [1, 1, 1],
+    // {type: 'carrier', size: 5, num: 1},
+    // {type: 'battleship', size: 4, num: 2},
+    // {type: 'cruiser', size: 3, num: 3},
+    // {type: 'submarine', size: 3, num: 4},
+    // {type: 'destroyer', size: 2, num: 5},
 ];
 
 const horVert = [
@@ -31,37 +36,69 @@ function shipCanBePlaced(x, y, ship, direction) {
     let possiblePlacementPos = [];
 
     if (direction === 'horizontal') {
-        // gather possible placment positions 
-        for (let i = x; i < (x + ship.length); i++) {
-            possiblePlacementPos.push(board[y][i]);
-        };
-        console.log(possiblePlacementPos);
         if (board[y][x + (ship.length - 1)] === undefined) {
             return false;
-        } else if (possiblePlacementPos.every(pos => pos == '~')) {
-            return true;
+        } else {
+            // gather possible placment positions 
+            for (let i = x; i < (x + ship.length); i++) {
+                possiblePlacementPos.push(board[y][i]);
+            };
+            return possiblePlacementPos.every(pos => pos == '~');
         }
-        return true;
-
     } else if (direction === 'vertical') {
-        // gather possible placment positions 
-        for (let i = y; i < (y + ship.length); i++) {
-            possiblePlacementPos.push(board[i][x]);
-        };
-        if (board[y + (ship.length - 1)][x] === undefined) {
+        if (board[y + (ship.length - 1)] === undefined) {
             return false;
+        } else {
+            // gather possible placment positions 
+            for (let i = y; i < (y + ship.length); i++) {
+                possiblePlacementPos.push(board[i][x]);
+            };
+            return possiblePlacementPos.every(pos => pos == '~');
         }
-        return true;
     }
 };
 
-const shipStartPositions = [];
-
 // collects all starting positions that a ship can be placed at
-function calcStartPositions() {
-     
+// returns an array of starting position in this format [x,y]
+function calcStartPositions(ship, direction) {
+    let startPositions = [];
+    console.log(direction);
+    for (let y = 0; y < board.length; y++) {
+        for (let x = 0; x < board[y].length; x++) {
+            if (shipCanBePlaced(x, y, ship, direction)) {
+                startPositions.push([x, y]);
+            }
+        }
+    }
+    return startPositions;
 };
 
-createBoard();
+function placeShips() {
+    ships.forEach(ship => {
+        let direction = horizonatalOrVertical();
+        let startPositions = calcStartPositions(ship, direction);
+        let randIndex = Math.floor(Math.random() * Math.floor(startPositions.length));
+        let randStartPos = startPositions[randIndex]; 
+        let x = randStartPos[0];
+        let y = randStartPos[1];
 
-console.log(shipCanBePlaced(3, 1, ships[0], 'horizontal'));
+        if (direction === 'horizontal') {
+            for (let i = x; i < (x + ship.length); i++) {
+                board[y][i] = 1;
+            }
+        } else if (direction === 'vertical') {
+            for (let i = y; i < (y + ship.length); i++) {
+                board[i][x] = 1;
+            }
+        }
+    })
+}
+
+createBoard();
+placeShips();
+
+console.log(board);
+
+// console.log(shipCanBePlaced(3, 1, ships[0], 'horizontal'));
+
+// console.log(calcStartPositions());
