@@ -6,9 +6,9 @@ const gameView = {
                 const gridSection = document.createElement('div');
                 gridSection.id = `${i}-${j}`;
                 if (board[i][j] === 1) {
-                    gridSection.className = 'ship';
+                    gridSection.className = 'grid ship';
                 } else {
-                    gridSection.className = 'water';
+                    gridSection.className = 'grid water';
                 }
                 boardContainer.appendChild(gridSection);
             }

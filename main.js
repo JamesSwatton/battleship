@@ -10,15 +10,15 @@ function createBoard() {
 };
 
 const ships = [
-    [1, 1, 1, 1],
-    [1, 1, 1, 1], 
-    [1, 1, 1],
-    [1, 1, 1],
-    // {type: 'carrier', size: 5, num: 1},
-    // {type: 'battleship', size: 4, num: 2},
-    // {type: 'cruiser', size: 3, num: 3},
-    // {type: 'submarine', size: 3, num: 4},
-    // {type: 'destroyer', size: 2, num: 5},
+    // [1, 1, 1, 1],
+    // [1, 1, 1, 1], 
+    // [1, 1, 1],
+    // [1, 1, 1],
+    {type: 'carrier', size: 5, num: 1},
+    {type: 'battleship', size: 4, num: 2},
+    {type: 'cruiser', size: 3, num: 3},
+    {type: 'submarine', size: 3, num: 4},
+    {type: 'destroyer', size: 2, num: 5},
 ];
 
 const horVert = [
@@ -36,21 +36,21 @@ function shipCanBePlaced(x, y, ship, direction) {
     let possiblePlacementPos = [];
 
     if (direction === 'horizontal') {
-        if (board[y][x + (ship.length - 1)] === undefined) {
+        if (board[y][x + (ship.size - 1)] === undefined) {
             return false;
         } else {
             // gather possible placment positions 
-            for (let i = x; i < (x + ship.length); i++) {
+            for (let i = x; i < (x + ship.size); i++) {
                 possiblePlacementPos.push(board[y][i]);
             };
             return possiblePlacementPos.every(pos => pos == '~');
         }
     } else if (direction === 'vertical') {
-        if (board[y + (ship.length - 1)] === undefined) {
+        if (board[y + (ship.size - 1)] === undefined) {
             return false;
         } else {
             // gather possible placment positions 
-            for (let i = y; i < (y + ship.length); i++) {
+            for (let i = y; i < (y + ship.size); i++) {
                 possiblePlacementPos.push(board[i][x]);
             };
             return possiblePlacementPos.every(pos => pos == '~');
@@ -75,21 +75,24 @@ function calcStartPositions(ship, direction) {
 
 function placeShips() {
     ships.forEach(ship => {
-        let direction = horizonatalOrVertical();
-        let startPositions = calcStartPositions(ship, direction);
-        let randIndex = Math.floor(Math.random() * Math.floor(startPositions.length));
-        let randStartPos = startPositions[randIndex]; 
-        let x = randStartPos[0];
-        let y = randStartPos[1];
+        for (let i = 0; i < ship.num; i++) {
+            let direction = horizonatalOrVertical();
+            let startPositions = calcStartPositions(ship, direction);
+            let randIndex = Math.floor(Math.random() * Math.floor(startPositions.length));
+            let randStartPos = startPositions[randIndex]; 
+            let x = randStartPos[0];
+            let y = randStartPos[1];
 
-        if (direction === 'horizontal') {
-            for (let i = x; i < (x + ship.length); i++) {
-                board[y][i] = 1;
+            if (direction === 'horizontal') {
+                for (let i = x; i < (x + ship.size); i++) {
+                    board[y][i] = 1;
+                }
+            } else if (direction === 'vertical') {
+                for (let i = y; i < (y + ship.size); i++) {
+                    board[i][x] = 1;
+                }
             }
-        } else if (direction === 'vertical') {
-            for (let i = y; i < (y + ship.length); i++) {
-                board[i][x] = 1;
-            }
+
         }
     })
 }
