@@ -10,10 +10,6 @@ function createBoard() {
 };
 
 const ships = [
-    // [1, 1, 1, 1],
-    // [1, 1, 1, 1], 
-    // [1, 1, 1],
-    // [1, 1, 1],
     {type: 'carrier', size: 5, num: 1},
     {type: 'battleship', size: 4, num: 2},
     {type: 'cruiser', size: 3, num: 3},
@@ -97,13 +93,18 @@ function placeShips() {
     })
 }
 
+document.getElementById('board').addEventListener('click', event => {
+    const clickPosition = event.target.id.split('-');
+    const x = +clickPosition[0];
+    const y = +clickPosition[1];
+    if (board[x][y] === 1) {
+        console.log('HIT');
+    }
+    
+    console.log(event.target.id.split('-'));
+})
+
 createBoard();
 placeShips();
 
 gameView.renderBoard(board);
-
-console.log(board);
-
-// console.log(shipCanBePlaced(3, 1, ships[0], 'horizontal'));
-
-// console.log(calcStartPositions());
