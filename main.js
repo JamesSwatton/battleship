@@ -97,6 +97,8 @@ function placeShips() {
 createBoard();
 placeShips();
 
+gameView.renderBoard(board);
+
 console.log(board);
 
 // console.log(shipCanBePlaced(3, 1, ships[0], 'horizontal'));

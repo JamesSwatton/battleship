@@ -4,5 +4,9 @@
     display: grid;
     grid-template-rows: repeat(10, 1fr);
     grid-template-columns: repeat(10, 1fr);
-    border: 2px solid black;
+    /* border: 2px solid blue; */
+}
+
+.water {
+    background-color: blue;
 }

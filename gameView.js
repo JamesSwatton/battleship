@@ -10,6 +10,7 @@ const gameView = {
                 } else {
                     gridSection.className = 'water';
                 }
+                boardContainer.appendChild(gridSection);
             }
         }
     }
