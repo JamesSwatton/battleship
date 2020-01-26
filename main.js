@@ -93,15 +93,18 @@ function placeShips() {
     })
 }
 
+// determine whether player has made a hit
 document.getElementById('board').addEventListener('click', event => {
+    const gridElement = event.target;
     const clickPosition = event.target.id.split('-');
     const x = +clickPosition[0];
     const y = +clickPosition[1];
     if (board[x][y] === 1) {
         console.log('HIT');
+        board[x][y] = "X"
+        gridElement.classList.add('hit');
+
     }
-    
-    console.log(event.target.id.split('-'));
 })
 
 createBoard();
