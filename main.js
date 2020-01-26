@@ -9,13 +9,28 @@ function createBoard() {
     }
 };
 
-const ships = [
-    {type: 'carrier', size: 5, num: 1},
-    {type: 'battleship', size: 4, num: 2},
-    {type: 'cruiser', size: 3, num: 3},
-    {type: 'submarine', size: 3, num: 4},
-    {type: 'destroyer', size: 2, num: 5},
-];
+const ships = {
+    c1: {type: 'carrier', size: 5, hits: 0},
+    b1: {type: 'battleship', size: 4, hits: 0},
+    b2: {type: 'battleship', size: 4, hits: 0},
+    cr1: {type: 'cruiser', size: 4, hits: 0},
+    cr2: {type: 'cruiser', size: 4, hits: 0},
+    cr3: {type: 'cruiser', size: 4, hits: 0},
+    s1: {type: 'submarine', size: 3, hits: 0},
+    s2: {type: 'submarine', size: 3, hits: 0},
+    s3: {type: 'submarine', size: 3, hits: 0},
+    s4: {type: 'submarine', size: 3, hits: 0},
+    d1: {type: 'destroyer', size: 2, hits: 0},
+    d2: {type: 'destroyer', size: 2, hits: 0},
+    d3: {type: 'destroyer', size: 2, hits: 0},
+    d4: {type: 'destroyer', size: 2, hits: 0},
+    d5: {type: 'destroyer', size: 2, hits: 0},
+    // {type: 'carrier', size: 5, num: 1},
+    // {type: 'battleship', size: 4, num: 2},
+    // {type: 'cruiser', size: 3, num: 3},
+    // {type: 'submarine', size: 3, num: 4},
+    // {type: 'destroyer', size: 2, num: 5},
+};
 
 const horVert = [
     "horizontal", 
@@ -70,27 +85,25 @@ function calcStartPositions(ship, direction) {
 };
 
 function placeShips() {
-    ships.forEach(ship => {
-        for (let i = 0; i < ship.num; i++) {
+    for (ship in ships) {
+        console.log(ships[ship])
             let direction = horizonatalOrVertical();
-            let startPositions = calcStartPositions(ship, direction);
+            let startPositions = calcStartPositions(ships[ship], direction);
             let randIndex = Math.floor(Math.random() * Math.floor(startPositions.length));
             let randStartPos = startPositions[randIndex]; 
             let x = randStartPos[0];
             let y = randStartPos[1];
 
             if (direction === 'horizontal') {
-                for (let i = x; i < (x + ship.size); i++) {
+                for (let i = x; i < (x + ships[ship].size); i++) {
                     board[y][i] = 1;
                 }
             } else if (direction === 'vertical') {
-                for (let i = y; i < (y + ship.size); i++) {
+                for (let i = y; i < (y + ships[ship].size); i++) {
                     board[i][x] = 1;
                 }
             }
-
-        }
-    })
+    }
 }
 
 // determine whether player has made a hit
