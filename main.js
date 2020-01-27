@@ -110,13 +110,17 @@ document.getElementById('board').addEventListener('click', event => {
         ships[ship].hits += 1;
         board[x][y] = "X"
         gridElement.classList.add('hit');
+        gridElement.innerHTML = '&#10005'; 
 
         if (checkForSunk(ship)) {
-            document.querySelector(`#${ship}`).style.backgroundColor = 'black';
+            document.querySelector(`#${ship}`).style.backgroundColor = 'blue';
             document.querySelector(`#${ship}`).style.color = 'white';
+            document.querySelector(`#${ship}`).style.textDecoration = 'line-through';
         }
         
         console.log(ships);
+    } else {
+        gridElement.innerHTML = '&#10005'; 
     }
 })
 
