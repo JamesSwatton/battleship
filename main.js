@@ -1,6 +1,12 @@
-const board = [];
+let playerPlacement = true;
+let playerShips = {};
+let selectedShip;
+let shipPlacementDirection = 'horizontal';
+
+let board = [];
 
 function createBoard() {
+    board = [];
     for (let i = 0; i < 10; i++) {
         board[i] = [];
         for (let j = 0; j < 10; j++) {
@@ -68,6 +74,80 @@ function calcStartPositions(ship, direction) {
     }
     return startPositions;
 };
+
+// when player placement mode is on/true randomly place a ship by
+// clicking on ship list, then allow player to move it to desired location
+document.querySelector('#enemy-ship-list').addEventListener('click', event => {
+    selectedShip = event.target.id;
+    // console.log(ships[selectedShip]);
+    // placeAShip(selectedShip);
+    // gameView.renderBoard(board);
+}) 
+
+document.querySelector('#board').addEventListener('mouseover', event => {
+    const mouseGridPos = event.target.id.split('-');
+    const mouseGridX = +mouseGridPos[0];
+    const mouseGridY = +mouseGridPos[1];
+    const selectedShipSize = ships[selectedShip].size;
+
+    createBoard();
+    if (shipPlacementDirection === 'horizontal') {
+        for (let i = 0; i < selectedShipSize; i++) {
+            board[mouseGridX][mouseGridY + i] = selectedShip;
+        } 
+    } else if (shipPlacementDirection === 'vertical') {
+        for (let i = 0; i < selectedShipSize; i++) {
+            board[mouseGridX + i][mouseGridY] = selectedShip;
+        }
+    }
+    gameView.renderBoard(board);
+});
+
+// document.getElementById('board').addEventListener('click', event => {
+//     const shipPlacementPos = [];
+//     if (playerPlacement && selectedShip) {
+//         for (let i = 0; i < 10; i++) {
+//             for (let j = 0; j < 10; j++) {
+//                 if (board[i][j] === selectedShip) {
+//                     shipPlacementPos.push([i, j]);
+//                 }
+//             }
+//         }
+//     }
+// })
+
+document.addEventListener('keydown', event => {
+    const keyCode = event.keyCode;
+
+    if (keyCode === 32) {
+        if (shipPlacementDirection === 'horizontal') {
+            shipPlacementDirection = 'vertical';
+        } else if (shipPlacementDirection === 'vertical') {
+            shipPlacementDirection = 'horizontal';
+        }
+    }
+    console.log(shipPlacementDirection);
+});
+
+
+// function placeAShip(ship) {
+//     let direction = horizonatalOrVertical();
+//     let startPositions = calcStartPositions(ships[ship], direction);
+//     let randIndex = Math.floor(Math.random() * Math.floor(startPositions.length));
+//     let randStartPos = startPositions[randIndex]; 
+//     let x = randStartPos[0];
+//     let y = randStartPos[1];
+
+//     if (direction === 'horizontal') {
+//         for (let i = x; i < (x + ships[ship].size); i++) {
+//             board[y][i] = ship;
+//         }
+//     } else if (direction === 'vertical') {
+//         for (let i = y; i < (y + ships[ship].size); i++) {
+//             board[i][x] = ship;
+//         }
+//     }
+// }
 
 function placeShips() {
     for (ship in ships) {
@@ -140,7 +220,7 @@ function determineWinner() {
 }
 
 createBoard();
-placeShips();
+// placeShips();
 
 gameView.renderBoard(board);
 gameView.renderShipList(ships);
