@@ -7,6 +7,19 @@ let board = [];
 
 let playerBoard = [];
 
+const ships = {
+    c: {type: 'carrier', size: 5, hits: 0},
+    b: {type: 'battleship', size: 4, hits: 0},
+    cr: {type: 'cruiser', size: 3, hits: 0},
+    s: {type: 'submarine', size: 3, hits: 0},
+    d: {type: 'destroyer', size: 2, hits: 0},
+};
+
+const horVert = [
+    "horizontal", 
+    "vertical"
+];
+
 function createBoard() {
     board = [];
     for (let i = 0; i < 10; i++) {
@@ -26,25 +39,13 @@ function createPlayerBoard() {
     }
 };
 
-const ships = {
-    c: {type: 'carrier', size: 5, hits: 0},
-    b: {type: 'battleship', size: 4, hits: 0},
-    cr: {type: 'cruiser', size: 3, hits: 0},
-    s: {type: 'submarine', size: 3, hits: 0},
-    d: {type: 'destroyer', size: 2, hits: 0},
-};
-
-const horVert = [
-    "horizontal", 
-    "vertical"
-];
-
 // randomly selects whether a ship will be placed horizontally or vertically 
 function horizonatalOrVertical() {
     const randIndex = Math.floor(Math.random() * Math.floor(2));
     return horVert[randIndex];
 };
 
+// checks if a ship can be placed. returns true or false
 function shipCanBePlaced(x, y, ship, direction) {
     let possiblePlacementPos = [];
 
@@ -111,7 +112,11 @@ document.querySelector('#board').addEventListener('mouseover', event => {
         } 
     } else if (shipPlacementDirection === 'vertical') {
         for (let i = 0; i < selectedShipSize; i++) {
+            if (shipOverlap(mouseGridX + i, mouseGridY)) {
+                board[mouseGridX + i][mouseGridY] = '-';
+            } else {
                 board[mouseGridX + i][mouseGridY] = selectedShip;
+            }
         }
     }
     gameView.renderBoard(board);
@@ -120,9 +125,18 @@ document.querySelector('#board').addEventListener('mouseover', event => {
 // create ship object and store in player ships
 document.getElementById('board').addEventListener('click', event => {
     const shipPlacementPos = [];
+    let overlap = false;
+    
+    for (let i = 0; i < 10; i++) {
+        for (let j = 0; j < 10; j++) { 
+            if (board[i][j] === '-') {
+                overlap = true;
+            }
+        }
+    }
 
     //gather ship current ship position
-    if (playerPlacement && selectedShip) {
+    if (playerPlacement && selectedShip && !overlap) {
         for (let i = 0; i < 10; i++) {
             for (let j = 0; j < 10; j++) {
                 if (board[i][j] === selectedShip) {
@@ -165,6 +179,9 @@ function placePlayerShips() {
     }
 }
 
+function shipOverlap(x, y) {
+    return board[x][y] != '~';
+}
 
 function placeShips() {
     for (ship in ships) {

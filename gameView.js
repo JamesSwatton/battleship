@@ -7,7 +7,11 @@ const gameView = {
                 const gridSection = document.createElement('div');
                 gridSection.id = `${i}-${j}`;
                 if (board[i][j] !== '~') {
-                    gridSection.className = 'grid ship';
+                    if (board[i][j] === '-') {
+                        gridSection.className = 'grid overlap';
+                    } else {
+                        gridSection.className = 'grid ship';
+                    }
                 } else {
                     gridSection.className = 'grid water';
                 }
