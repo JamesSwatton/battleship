@@ -1,9 +1,30 @@
-body {
-    width: 740px;
+:root {
+    --width: 740px;
+    --height: calc((var(--width) / 100) * 75);
+}
+
+#game-container {
+    display: grid;
+    grid-template-columns: 75% 25%;
+    grid-template-rows: 67% 33%;
+    grid-template-areas: 
+        "A B"
+        "A C";
+    width: var(--width);
+    height: var(--height);
+    background-color: blue;
+}
+
+#board {
+    grid-area: A;
+    display: grid;
+    grid-template-rows: repeat(10, 1fr);
+    grid-template-columns: repeat(10, 1fr);
+    border: 1px solid white;
 }
 
 #enemy-ship-list {
-    width: 128px;
+    grid-area: B;
     font-size: 20px;
     color: white;
     padding: 10px 10px 0px;
@@ -12,28 +33,18 @@ body {
     border-left: 2px solid white;
 }
 
-#game-container {
-    /* width: 700px; */
-    background-color: blue;
-    display: flex;
-    /* height: 600px; */
-    /* display: inline-block; */
+#player-board {
+    grid-area: C;
+    display: grid;
+    grid-template-rows: repeat(10, 1fr);
+    grid-template-columns: repeat(10, 1fr);
+    border: 1px solid white;
 }
 
 .ship-item {
     display: inline;
     background-color: white;
     color: black;
-}
-
-#board {
-    width: 600px;
-    height: 600px;
-    display: grid;
-    grid-template-rows: repeat(10, 1fr);
-    grid-template-columns: repeat(10, 1fr);
-    /* border-style: outset; */
-    border: 1px solid white;
 }
 
 .grid {
@@ -47,10 +58,6 @@ body {
 
 .ship {
     background-color: lightgray;
-}
-
-.water {
-    /* background-color: blue; */
 }
 
 .hit {

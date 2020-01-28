@@ -122,7 +122,22 @@ document.getElementById('board').addEventListener('click', event => {
     } else {
         gridElement.innerHTML = '&#10005'; 
     }
+
+    determineWinner();
 })
+
+// logic to determine winner
+function determineWinner() {
+    let numOfHits = 0
+    for (let i = 0; i < 10; i++) {
+        for (let j = 0; j < 10; j++) {
+            if (board[i][j] === 'X') {
+                numOfHits += 1;
+            } 
+        }
+    }
+    return numOfHits === 17;
+}
 
 createBoard();
 placeShips();
