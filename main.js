@@ -103,18 +103,21 @@ document.querySelector('#board').addEventListener('mouseover', event => {
     gameView.renderBoard(board);
 });
 
-// document.getElementById('board').addEventListener('click', event => {
-//     const shipPlacementPos = [];
-//     if (playerPlacement && selectedShip) {
-//         for (let i = 0; i < 10; i++) {
-//             for (let j = 0; j < 10; j++) {
-//                 if (board[i][j] === selectedShip) {
-//                     shipPlacementPos.push([i, j]);
-//                 }
-//             }
-//         }
-//     }
-// })
+document.getElementById('board').addEventListener('click', event => {
+    const shipPlacementPos = [];
+    if (playerPlacement && selectedShip) {
+        for (let i = 0; i < 10; i++) {
+            for (let j = 0; j < 10; j++) {
+                if (board[i][j] === selectedShip) {
+                    shipPlacementPos.push([i, j]);
+                }
+            }
+        }
+        playerShips[selectedShip] = shipPlacementPos;
+        console.log(playerShips);
+        selectedShip = '';
+    }
+})
 
 document.addEventListener('keydown', event => {
     const keyCode = event.keyCode;
