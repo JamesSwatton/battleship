@@ -37,6 +37,15 @@ function createPlayerBoard() {
             playerBoard[i][j] = '~';
         }
     }
+
+    if (playerShips) {
+        playerShips.forEach(ship => {
+            ship.positions.forEach(pos => {;
+                playerBoard[pos[0]][pos[1]] = ship.type;
+            })
+        })
+    }
+    console.log(playerBoard);
 };
 
 // randomly selects whether a ship will be placed horizontally or vertically 
@@ -104,12 +113,16 @@ document.querySelector('#board').addEventListener('mouseover', event => {
     placePlayerShips();
     if (shipPlacementDirection === 'horizontal') {
         for (let i = 0; i < selectedShipSize; i++) {
-            if (mouseGridY + i >= 10) {
-                return 
+            if (shipOverlap(mouseGridX, mouseGridY + i)) {
+                board[mouseGridX][mouseGridY + i] = '-';
             } else {
-                board[mouseGridX][mouseGridY + i] = selectedShip;
-            }
-        } 
+                if (mouseGridY + i >= 10) {
+                    return 
+                } else {
+                    board[mouseGridX][mouseGridY + i] = selectedShip;
+                }
+            } 
+        }
     } else if (shipPlacementDirection === 'vertical') {
         for (let i = 0; i < selectedShipSize; i++) {
             if (shipOverlap(mouseGridX + i, mouseGridY)) {
@@ -181,7 +194,23 @@ function placePlayerShips() {
 
 function shipOverlap(x, y) {
     return board[x][y] != '~';
-}
+};
+
+
+// reset ships clearing the board
+document.getElementById('reset').addEventListener('click', () => {
+    playerShips = [];
+    createBoard();
+    gameView.renderBoard(board);
+});
+
+// commit player ship placement to small board view
+document.getElementById('ready').addEventListener('click', () => {
+    createPlayerBoard();
+    gameView.renderPlayerBoard(playerBoard);
+    createBoard();
+    gameView.renderBoard(board);
+});
 
 function placeShips() {
     for (ship in ships) {
@@ -257,6 +286,7 @@ createPlayerBoard();
 // placeShips();
 
 gameView.renderBoard(board);
+gameView.renderPlayerBoard(playerBoard);
 gameView.renderShipList(ships);
 console.log(board);
 console.log(ships);

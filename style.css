@@ -23,7 +23,8 @@
     border: 1px solid white;
 }
 
-#enemy-ship-list {
+#ship-list {
+    position: relative;
     grid-area: B;
     font-size: 20px;
     color: white;
@@ -31,6 +32,11 @@
     border-top: 2px solid white;
     border-bottom: 2px solid white;
     border-left: 2px solid white;
+}
+
+#reset-ready {
+    position: absolute;
+    bottom: 0;
 }
 
 #player-board {
@@ -67,3 +73,10 @@
 .overlap {
     background-color: red;
 }
+
+.button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
