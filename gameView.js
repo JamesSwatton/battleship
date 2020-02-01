@@ -41,14 +41,28 @@ const gameView = {
         }
     },
 
+    // TODO: display a grid representation of the ship next to 
+    // the ship name
     renderShipList(ships) {
         for (ship in ships) {
             const enemyShipList = document.getElementById('enemy-ship-list');  
-            const shipText = document.createElement('div');
-            shipText.className = 'ship-item';
+            const shipItem = document.createElement('div');
+            shipItem.className = 'ship-item';
+            shipItem.id = ship;
+            const shipText = document.createElement('p')
             shipText.id = ship;
             shipText.textContent = ship;
-            enemyShipList.appendChild(shipText);
+            shipItem.appendChild(shipText);
+            const shipGrid = document.createElement('div');
+            shipGrid.className = 'ship-grid';
+            for (let i = 0; i < ships[ship].size; i++) {
+                const shipPart = document.createElement('div');
+                shipPart.className = 'grid';
+                shipGrid.appendChild(shipPart);
+            }
+            shipItem.appendChild(shipGrid);
+            
+            enemyShipList.appendChild(shipItem);
             enemyShipList.appendChild(document.createElement('br'));
         }
     }

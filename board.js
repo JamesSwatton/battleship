@@ -75,9 +75,8 @@ const Board = {
 
     calcStartPositions(ship, orientation) {
         let startPositions = [];
-        console.log(orientation);
-        for (let y = 0; y < this._board.length; y++) {
-            for (let x = 0; x < this._board[y].length; x++) {
+        for (let y = 0; y < 10; y++) {
+            for (let x = 0; x < 10; x++) {
                 if (this.shipCanBePlaced(x, y, ship, orientation)) {
                     startPositions.push([y, x]);
                 }
@@ -89,7 +88,6 @@ const Board = {
     selectRndStartPosition(startPositions) {
         let randIndex = Math.floor(Math.random() * Math.floor(startPositions.length));
         let randStrtPos = startPositions[randIndex]; 
-        console.log(randStrtPos)
         let y = randStrtPos[0];
         let x = randStrtPos[1];
         return [y, x];
@@ -101,18 +99,20 @@ const Board = {
             let randOrientation = this.horizonatalOrVertical();
             let startPositions = this.calcStartPositions(currentShip, randOrientation)
             let randStrtPos = this.selectRndStartPosition(startPositions);
-            console.log(randStrtPos[0])
-            console.log(randStrtPos[1])
             if (randOrientation=== 'horizontal') {
                 for (let x = randStrtPos[1]; x < (randStrtPos[1] + currentShip.size); x++) {
-                    this._board[randStrtPos[1]][x] = ship;
+                    console.log(ship)
+                    console.log(`${randStrtPos[0]}, ${randStrtPos[1]}`);
+                    this._board[randStrtPos[0]][x] = ship;
                 }
             } else if (randOrientation=== 'vertical') {
                 for (let y = randStrtPos[0]; y < (randStrtPos[0] + currentShip.size); y++) {
-                    console.log(this._board);
-                    this._board[y][randStrtPos[0]] = ship;
+                    console.log(ship)
+                    console.log(`${randStrtPos[0]}, ${randStrtPos[1]}`);
+                    this._board[y][randStrtPos[1]] = ship;
                 }
             }
         }
+        console.log(this._board);
     },
 };
