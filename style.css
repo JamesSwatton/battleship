@@ -58,8 +58,13 @@ p {
 }
 
 .ship-grid {
-    display: flex;
+    display: inline-flex;
     margin: 5px 0px;
+}
+
+.ship-grid:hover {
+    background-color: lightgray;
+    cursor: pointer;
 }
 
 .ship-grid .grid {

@@ -51,26 +51,25 @@ const Board = {
         let possiblePlacementPos = [];
 
         if (orientation === 'horizontal') {
-            if (this._board[y][x + (ship.size - 1)] === undefined) {
+            if (x + ship.size > 9) {
                 return false;
             } else {
-                // gather possible placment positions 
-                for (let i = x; i < (x + ship.size); i++) {
-                    possiblePlacementPos.push(this._board[y][i]);
-                };
-                return possiblePlacementPos.every(pos => pos == '~');
+                for (let i = 0; i < ship.size; i ++) {
+                    let posX = x + i;
+                    possiblePlacementPos.push(this._board[y][posX]);
+                }
             }
         } else if (orientation === 'vertical') {
-            if (this._board[y + (ship.size - 1)] === undefined) {
+            if (y + ship.size > 9) {
                 return false;
             } else {
-                // gather possible placment positions 
-                for (let i = y; i < (y + ship.size); i++) {
-                    possiblePlacementPos.push(this._board[i][x]);
-                };
-                return possiblePlacementPos.every(pos => pos == '~');
+                for (let i = 0; i < ship.size; i ++) {
+                    let posY = y + i;
+                    possiblePlacementPos.push(this._board[posY][x]);
+                }
             }
         }
+                return possiblePlacementPos.every(pos => pos == '~');
     },
 
     _calcStartPositions(ship, orientation) {
