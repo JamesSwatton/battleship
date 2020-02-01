@@ -47,7 +47,7 @@ const gameView = {
             const shipText = document.createElement('div');
             shipText.className = 'ship-item';
             shipText.id = ship;
-            shipText.textContent = ships[ship].type;
+            shipText.textContent = ship;
             enemyShipList.appendChild(shipText);
             enemyShipList.appendChild(document.createElement('br'));
         }

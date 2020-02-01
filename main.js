@@ -177,17 +177,12 @@ let shipPlacementDirection = 'horizontal';
 //    return numOfHits === 17;
 //}
 
-// createBoard();
 // createPlayerBoard();
-// placeShips();
-
-    console.log(board)
 board.createBlankBoard();
-console.log(board.board);
 board.randomlyPlaceShips();
 gameView.renderBoard(board.board);
+gameView.renderShipList(board.ships);
 
 // gameView.renderPlayerBoard(playerBoard);
-// gameView.renderShipList(ships);
 // console.log(board);
 // console.log(ships);
