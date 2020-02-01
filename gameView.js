@@ -63,7 +63,7 @@ const gameView = {
             shipItem.appendChild(shipGrid);
             
             enemyShipList.appendChild(shipItem);
-            enemyShipList.appendChild(document.createElement('br'));
+            // enemyShipList.appendChild(document.createElement('br'));
         }
     }
 

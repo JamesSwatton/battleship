@@ -53,16 +53,18 @@ p {
 }
 
 .ship-item {
-    display: flex;
+    /* display: flex; */
     color: black;
 }
 
 .ship-grid {
     display: flex;
+    margin: 5px 0px;
 }
 
 .ship-grid .grid {
-    width: 10px;
+    width: 19px;
+    height: 19px;
 }
 
 .grid {
