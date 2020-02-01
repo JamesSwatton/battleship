@@ -104,13 +104,13 @@ const Board = {
             console.log(randStrtPos[0])
             console.log(randStrtPos[1])
             if (randOrientation=== 'horizontal') {
-                for (let i = randStrtPos[1]; i < (randStrtPos[1] + currentShip.size); i++) {
-                    this._board[randStrtPos[1]][i] = ship;
+                for (let x = randStrtPos[1]; x < (randStrtPos[1] + currentShip.size); x++) {
+                    this._board[randStrtPos[1]][x] = ship;
                 }
             } else if (randOrientation=== 'vertical') {
-                for (let i = randStrtPos[0]; i < (randStrtPos[0] + currentShip.size); i++) {
+                for (let y = randStrtPos[0]; y < (randStrtPos[0] + currentShip.size); y++) {
                     console.log(this._board);
-                    this._board[i][randStrtPos[0]] = ship;
+                    this._board[y][randStrtPos[0]] = ship;
                 }
             }
         }
