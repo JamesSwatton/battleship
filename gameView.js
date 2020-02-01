@@ -1,6 +1,6 @@
 const gameView = {
-    renderBoard(board) {
-        const boardContainer = document.getElementById('board');
+    renderBoard(board, elementId) {
+        const boardContainer = document.getElementById(`${elementId}`);
         boardContainer.innerHTML = '';
         for (let i = 0; i < 10; i++) {
             for (let j = 0; j < 10; j++) {
@@ -20,29 +20,6 @@ const gameView = {
         }
     },
 
-    renderPlayerBoard(board) {
-        const boardContainer = document.getElementById('player-board');
-        boardContainer.innerHTML = '';
-        for (let i = 0; i < 10; i++) {
-            for (let j = 0; j < 10; j++) {
-                const gridSection = document.createElement('div');
-                // gridSection.id = `${i}-${j}`;
-                if (board[i][j] !== '~') {
-                    if (board[i][j] === '-') {
-                        gridSection.className = 'grid overlap';
-                    } else {
-                        gridSection.className = 'grid ship';
-                    }
-                } else {
-                    gridSection.className = 'grid water';
-                }
-                boardContainer.appendChild(gridSection);
-            }
-        }
-    },
-
-    // TODO: display a grid representation of the ship next to 
-    // the ship name
     renderShipList(ships) {
         for (ship in ships) {
             const enemyShipList = document.getElementById('enemy-ship-list');  

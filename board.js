@@ -93,25 +93,25 @@ const Board = {
         return [y, x];
     }, 
 
+    placeShip(startX, startY, orientation, ship) {
+        if (orientation === 'horizontal') {
+            for (let x = startX; x < (startX + ship.size); x++) {
+                this._board[startY][x] = ship;
+            }
+        } else if (orientation === 'vertical') {
+            for (let y = startY; y < (startY + ship.size); y++) {
+                this._board[y][startX] = ship;
+            }
+        }
+    },
+
     randomlyPlaceShips() {
         for (ship in this.ships) {
             let currentShip = this.ships[ship];
             let randOrientation = this.horizonatalOrVertical();
             let startPositions = this.calcStartPositions(currentShip, randOrientation)
             let randStrtPos = this.selectRndStartPosition(startPositions);
-            if (randOrientation=== 'horizontal') {
-                for (let x = randStrtPos[1]; x < (randStrtPos[1] + currentShip.size); x++) {
-                    console.log(ship)
-                    console.log(`${randStrtPos[0]}, ${randStrtPos[1]}`);
-                    this._board[randStrtPos[0]][x] = ship;
-                }
-            } else if (randOrientation=== 'vertical') {
-                for (let y = randStrtPos[0]; y < (randStrtPos[0] + currentShip.size); y++) {
-                    console.log(ship)
-                    console.log(`${randStrtPos[0]}, ${randStrtPos[1]}`);
-                    this._board[y][randStrtPos[1]] = ship;
-                }
-            }
+            this.placeShip(randStrtPos[1], randStrtPos[0], randOrientation, currentShip);
         }
         console.log(this._board);
     },

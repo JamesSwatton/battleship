@@ -1,4 +1,5 @@
-const board = Object.create(Board);
+const enemyBoard = Object.create(Board);
+const playerBoard = Object.create(Board);
 // let gameState = 'placement';
 
 // let playerPlacement = true;
@@ -178,10 +179,13 @@ let shipPlacementDirection = 'horizontal';
 //}
 
 // createPlayerBoard();
-board.createBlankBoard();
-board.randomlyPlaceShips();
-gameView.renderBoard(board.board);
-gameView.renderShipList(board.ships);
+enemyBoard.createBlankBoard();
+enemyBoard.randomlyPlaceShips();
+gameView.renderBoard(enemyBoard.board, 'board');
+gameView.renderShipList(enemyBoard.ships);
+
+playerBoard.createBlankBoard();
+gameView.renderBoard(playerBoard.board, 'player-board')
 
 // gameView.renderPlayerBoard(playerBoard);
 // console.log(board);
