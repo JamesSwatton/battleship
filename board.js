@@ -38,7 +38,7 @@ const Board = {
         })
     },
 
-    horizonatalOrVertical() {
+    _horizonatalOrVertical() {
         const horVert = [
             "horizontal", 
             "vertical"
@@ -47,7 +47,7 @@ const Board = {
         return horVert[randIndex];
     },
 
-    shipCanBePlaced(x, y, ship, orientation) {
+    _shipCanBePlaced(x, y, ship, orientation) {
         let possiblePlacementPos = [];
 
         if (orientation === 'horizontal') {
@@ -73,11 +73,11 @@ const Board = {
         }
     },
 
-    calcStartPositions(ship, orientation) {
+    _calcStartPositions(ship, orientation) {
         let startPositions = [];
         for (let y = 0; y < 10; y++) {
             for (let x = 0; x < 10; x++) {
-                if (this.shipCanBePlaced(x, y, ship, orientation)) {
+                if (this._shipCanBePlaced(x, y, ship, orientation)) {
                     startPositions.push([y, x]);
                 }
             }
@@ -85,7 +85,7 @@ const Board = {
         return startPositions;
     },
 
-    selectRndStartPosition(startPositions) {
+    _selectRndStartPosition(startPositions) {
         let randIndex = Math.floor(Math.random() * Math.floor(startPositions.length));
         let randStrtPos = startPositions[randIndex]; 
         let y = randStrtPos[0];
@@ -108,11 +108,10 @@ const Board = {
     randomlyPlaceShips() {
         for (ship in this.ships) {
             let currentShip = this.ships[ship];
-            let randOrientation = this.horizonatalOrVertical();
-            let startPositions = this.calcStartPositions(currentShip, randOrientation)
-            let randStrtPos = this.selectRndStartPosition(startPositions);
+            let randOrientation = this._horizonatalOrVertical();
+            let startPositions = this._calcStartPositions(currentShip, randOrientation)
+            let randStrtPos = this._selectRndStartPosition(startPositions);
             this.placeShip(randStrtPos[1], randStrtPos[0], randOrientation, currentShip);
         }
-        console.log(this._board);
     },
 };
