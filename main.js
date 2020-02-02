@@ -1,55 +1,71 @@
 const enemyBoard = Object.create(Board);
 const playerBoard = Object.create(Board);
-let gameState = 'placement';
+// let gameState = 'placement';
 
 // let playerPlacement = true;
 let playerShips = [];
+let selectedShipType;
 let selectedShip;
-let shipPlacementDirection = 'horizontal';
+let selectedOrientation = 'horizontal';
 
 
 // --- HERE IS HOW THE PLAYER SELECTS AND PLACES EACH SHIP ---
 //
 // select ship to place 
 document.querySelector('#enemy-ship-list').addEventListener('click', event => {
-    selectedShip = event.target.parentElement.parentElement.id;
-    console.log(selectedShip);
+    selectedShipType = event.target.parentElement.parentElement.id;
+    selectedShip = playerBoard.ships[selectedShipType];
 }) 
 
 // display ship at mouse location 
 document.querySelector('#board').addEventListener('mouseover', event => {
     if (gameState === 'placement') {
         const mouseGridPos = event.target.id.split('-');
-        const mouseGridX = +mouseGridPos[0];
-        const mouseGridY = +mouseGridPos[1];
-        const selectedShipSize = playerBoard.ships[selectedShip].size;
+        let mouseGridX = +mouseGridPos[1];
+        let mouseGridY = +mouseGridPos[0];
 
-        // createBoard();
+        playerBoard.createBlankBoard();
+        playerBoard.board = playerBoard.tempBoard;
         // placePlayerShips();
-        if (shipPlacementDirection === 'horizontal') {
-            for (let i = 0; i < selectedShipSize; i++) {
-                if (shipOverlap(mouseGridX, mouseGridY + i)) {
-                    board[mouseGridX][mouseGridY + i] = '-';
-                } else {
-                    if (mouseGridY + i >= 10) {
-                        return 
-                    } else {
-                        board[mouseGridX][mouseGridY + i] = selectedShip;
-                    }
-                } 
+        if (selectedOrientation === 'horizontal') {
+            if (!playerBoard.isWithinboard(mouseGridX, selectedShip)) {
+                mouseGridX = 10 - selectedShip.size;
             }
-        } else if (shipPlacementDirection === 'vertical') {
-            for (let i = 0; i < selectedShipSize; i++) {
-                if (shipOverlap(mouseGridX + i, mouseGridY)) {
-                    board[mouseGridX + i][mouseGridY] = '-';
-                } else {
-                    board[mouseGridX + i][mouseGridY] = selectedShip;
+            playerBoard.placeShip(mouseGridX, mouseGridY, selectedOrientation, selectedShip)
+            // for (let i = 0; i < selectedShip.size; i++) {
+                // if (shipOverlap(mouseGridX, mouseGridY + i)) {
+                //     board[mouseGridX][mouseGridY + i] = '-';
+                // } else {
+                    // if (mouseGridY + i >= 10) {
+                    //     return 
+                    // } else {
+                    //     playerBoard.board[mouseGridX][mouseGridY + i] = selectedShip;
+                    // }
+                // } 
+            // }
+            } else if (selectedOrientation === 'vertical') {
+                if (!playerBoard.isWithinboard(mouseGridY, selectedShip)) {
+                    mouseGridY = 10 - selectedShip.size;
                 }
+            playerBoard.placeShip(mouseGridX, mouseGridY, selectedOrientation, selectedShip)
+                // for (let i = 0; i < selectedShipSize; i++) {
+                    // if (shipOverlap(mouseGridX + i, mouseGridY)) {
+                    //     board[mouseGridX + i][mouseGridY] = '-';
+                // } else {
+                    // playerBoard.board[mouseGridX + i][mouseGridY] = selectedShip;
+                // }
             }
-        }
-        gameView.renderBoard(board);
+        // }
+        gameView.renderBoard(playerBoard.board, 'board');
     }
 });
+
+// capture temporary ship placement
+document.getElementById('board').addEventListener('click', event => {
+    console.log('hi')
+    console.log(playerBoard.board);
+    playerBoard.tempBoard = playerBoard.board;
+})
 
 // create ship object and store in player ships
 //document.getElementById('board').addEventListener('click', () => {
@@ -85,18 +101,17 @@ document.querySelector('#board').addEventListener('mouseover', event => {
 //})
 
 //// rotate ship
-//document.addEventListener('keydown', event => {
-//    const keyCode = event.keyCode;
+document.addEventListener('keydown', event => {
+    const keyCode = event.keyCode;
 
-//    if (keyCode === 32) {
-//        if (shipPlacementDirection === 'horizontal') {
-//            shipPlacementDirection = 'vertical';
-//        } else if (shipPlacementDirection === 'vertical') {
-//            shipPlacementDirection = 'horizontal';
-//        }
-//    }
-//    console.log(shipPlacementDirection);
-//});
+    if (keyCode === 32) {
+        if (selectedOrientation === 'horizontal') {
+            selectedOrientation = 'vertical';
+        } else if (selectedOrientation === 'vertical') {
+            selectedOrientation = 'horizontal';
+        }
+    }
+});
 
 //function placePlayerShips() {
 //    if (playerShips) {
@@ -185,6 +200,7 @@ gameView.renderBoard(enemyBoard.board, 'board');
 gameView.renderShipList(enemyBoard.ships);
 
 playerBoard.createBlankBoard();
+// playerBoard.tempBoard = playerBoard.board;
 gameView.renderBoard(playerBoard.board, 'player-board')
 
 // gameView.renderPlayerBoard(playerBoard);

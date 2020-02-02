@@ -21,18 +21,18 @@ const gameView = {
     },
 
     renderShipList(ships) {
-        for (ship in ships) {
+        ships.forEach(ship => {
             const enemyShipList = document.getElementById('enemy-ship-list');  
             const shipItem = document.createElement('div');
             shipItem.className = 'ship-item';
-            shipItem.id = ship;
+            shipItem.id = ship.type;
             const shipText = document.createElement('p')
-            shipText.id = ship;
-            shipText.textContent = ship;
+            // shipText.id = ship;
+            shipText.textContent = ship.type;
             shipItem.appendChild(shipText);
             const shipGrid = document.createElement('div');
             shipGrid.className = 'ship-grid';
-            for (let i = 0; i < ships[ship].size; i++) {
+            for (let i = 0; i < ship.size; i++) {
                 const shipPart = document.createElement('div');
                 shipPart.className = 'grid';
                 shipGrid.appendChild(shipPart);
@@ -41,7 +41,7 @@ const gameView = {
             
             enemyShipList.appendChild(shipItem);
             // enemyShipList.appendChild(document.createElement('br'));
-        }
+        });
     }
 
 }

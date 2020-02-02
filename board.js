@@ -1,21 +1,36 @@
 const Board = {
     _board: [],
 
-    _ships : {
-        carrier: {size: 5, hits: 0},
-        battleship: {size: 4, hits: 0},
-        cruiser: {size: 3, hits: 0},
-        submarine: {size: 3, hits: 0},
-        destroyer: {size: 2, hits: 0},
-    },
+    _tempBoard: [],
+
+    _ships : [
+        {type: 'carrier', size: 5, hits: 0},
+        {type: 'battleship', size: 4, hits: 0},
+        {type: 'cruiser', size: 3, hits: 0},
+        {type: 'submarine', size: 3, hits: 0},
+        {type: 'destroyer', size: 2, hits: 0},
+    ],
 
     get board() {
         return this._board;
     },
 
+    get tempBoard() {
+        return this._tempBoard;
+    },
+
     get ships() {
         return this._ships;
     },
+
+    set board(board) {
+        this._board = board;
+    },
+
+    set tempBoard(board) {
+        this._tempBoard = board;
+    },
+
 
     createBlankBoard() {
         // this._board = [];
@@ -47,26 +62,30 @@ const Board = {
         return horVert[randIndex];
     },
 
+    isWithinboard(xOrY, ship) {
+        return (xOrY + ship.size) <= 10;
+    },
+
     _shipCanBePlaced(x, y, ship, orientation) {
         let possiblePlacementPos = [];
 
         if (orientation === 'horizontal') {
-            if (x + ship.size > 9) {
-                return false;
-            } else {
+            if (this.isWithinboard(x, ship)) {
                 for (let i = 0; i < ship.size; i ++) {
                     let posX = x + i;
                     possiblePlacementPos.push(this._board[y][posX]);
                 }
+            } else {
+                return false;
             }
         } else if (orientation === 'vertical') {
-            if (y + ship.size > 9) {
-                return false;
-            } else {
+            if (this.isWithinboard(y, ship)) {
                 for (let i = 0; i < ship.size; i ++) {
                     let posY = y + i;
                     possiblePlacementPos.push(this._board[posY][x]);
                 }
+            } else {
+                return false;
             }
         }
                 return possiblePlacementPos.every(pos => pos == '~');
@@ -95,22 +114,21 @@ const Board = {
     placeShip(startX, startY, orientation, ship) {
         if (orientation === 'horizontal') {
             for (let x = startX; x < (startX + ship.size); x++) {
-                this._board[startY][x] = ship;
+                this._board[startY][x] = ship.type;
             }
         } else if (orientation === 'vertical') {
             for (let y = startY; y < (startY + ship.size); y++) {
-                this._board[y][startX] = ship;
+                this._board[y][startX] = ship.type;
             }
         }
     },
 
     randomlyPlaceShips() {
-        for (ship in this.ships) {
-            let currentShip = this.ships[ship];
+        this._ships.forEach(ship => {
             let randOrientation = this._horizonatalOrVertical();
-            let startPositions = this._calcStartPositions(currentShip, randOrientation)
+            let startPositions = this._calcStartPositions(ship, randOrientation)
             let randStrtPos = this._selectRndStartPosition(startPositions);
-            this.placeShip(randStrtPos[1], randStrtPos[0], randOrientation, currentShip);
-        }
+            this.placeShip(randStrtPos[1], randStrtPos[0], randOrientation, ship);
+        })
     },
 };
