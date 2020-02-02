@@ -129,11 +129,19 @@ document.addEventListener('keydown', event => {
 
 
 //// reset ships clearing the board
-//document.getElementById('reset').addEventListener('click', () => {
-//    playerShips = [];
-//    createBoard();
-//    gameView.renderBoard(board);
-//});
+document.getElementById('reset').addEventListener('click', () => {
+    playerBoard.ships.forEach(ship => {
+        ship.startPos = [];
+        ship.orientation = '';
+    })
+    // reset grid-ship background colour
+    let shipGrids = document.getElementsByClassName('ship-grid');
+    for (let i = 0; i < shipGrids.length; i++) {
+        shipGrids[i].style.backgroundColor = 'blue';
+    }
+    playerBoard.createBlankBoard();
+    gameView.renderBoard(playerBoard.board, 'board');
+});
 
 //// commit player ship placement to small board view
 //document.getElementById('ready').addEventListener('click', () => {
