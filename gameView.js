@@ -5,9 +5,9 @@ const gameView = {
         for (let i = 0; i < 10; i++) {
             for (let j = 0; j < 10; j++) {
                 const gridSection = document.createElement('div');
-                gridSection.id = `${i}-${j}`;
+                gridSection.id = `${j}-${i}`;
                 if (board[i][j] !== '~') {
-                    if (board[i][j] === '-') {
+                    if (board[i][j] === '!') {
                         gridSection.className = 'grid overlap';
                     } else {
                         gridSection.className = 'grid ship';
@@ -31,6 +31,7 @@ const gameView = {
             shipText.textContent = ship.type;
             shipItem.appendChild(shipText);
             const shipGrid = document.createElement('div');
+            shipGrid.id = `${ship.type}-grid`;
             shipGrid.className = 'ship-grid';
             for (let i = 0; i < ship.size; i++) {
                 const shipPart = document.createElement('div');

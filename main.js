@@ -15,58 +15,57 @@ let selectedOrientation = 'horizontal';
 document.querySelector('#enemy-ship-list').addEventListener('click', event => {
     selectedShipType = event.target.parentElement.parentElement.id;
     selectedShip = playerBoard.getShip(selectedShipType);
+    document.getElementById(`${selectedShipType}-grid`).style.backgroundColor = 'blue';
+    console.log(selectedShip);
 }) 
 
 // display ship at mouse location 
 document.querySelector('#board').addEventListener('mouseover', event => {
     if (gameState === 'placement' && selectedShip) {
+        selectedShip.orientation = selectedOrientation;
         const mouseGridPos = event.target.id.split('-');
-        let mouseGridX = +mouseGridPos[1];
-        let mouseGridY = +mouseGridPos[0];
+        let mouseGridX = +mouseGridPos[0];
+        let mouseGridY = +mouseGridPos[1];
+        selectedShip.startPos = [mouseGridX, mouseGridY];
+
+        // capture the selectedShip start position by deselecting the ship
+        document.getElementById('board').addEventListener('click', () => {
+            console.log(playerBoard.overlap);
+            if (!playerBoard.overlap) {
+                document.getElementById(`${selectedShipType}-grid`).style.backgroundColor = 'lightgray';
+                selectedShip = ''; 
+                selectedShipType = '';
+            }
+        })
 
         playerBoard.createBlankBoard();
-        playerBoard.board = playerBoard.tempBoard;
-        // console.log(playerBoard.tempBoard);
-        // placePlayerShips();
+        playerBoard.ships.forEach(ship => {
+            if (ship.startPos) {
+                playerBoard.placeShip(ship);
+            }
+        });
+
         if (selectedOrientation === 'horizontal') {
             if (!playerBoard.isWithinboard(mouseGridX, selectedShip)) {
-                mouseGridX = 10 - selectedShip.size;
+                selectedShip.startPos[0] = 10 - selectedShip.size;
             }
-            playerBoard.placeShip(mouseGridX, mouseGridY, selectedOrientation, selectedShip)
-            // for (let i = 0; i < selectedShip.size; i++) {
-                // if (shipOverlap(mouseGridX, mouseGridY + i)) {
-                //     board[mouseGridX][mouseGridY + i] = '-';
-                // } else {
-                    // if (mouseGridY + i >= 10) {
-                    //     return 
-                    // } else {
-                    //     playerBoard.board[mouseGridX][mouseGridY + i] = selectedShip;
-                    // }
-                // } 
-            // }
-            } else if (selectedOrientation === 'vertical') {
-                if (!playerBoard.isWithinboard(mouseGridY, selectedShip)) {
-                    mouseGridY = 10 - selectedShip.size;
-                }
-            playerBoard.placeShip(mouseGridX, mouseGridY, selectedOrientation, selectedShip)
-                // for (let i = 0; i < selectedShipSize; i++) {
-                    // if (shipOverlap(mouseGridX + i, mouseGridY)) {
-                    //     board[mouseGridX + i][mouseGridY] = '-';
-                // } else {
-                    // playerBoard.board[mouseGridX + i][mouseGridY] = selectedShip;
-                // }
+            playerBoard.placeShip(selectedShip)
+        } else if (selectedOrientation === 'vertical') {
+            if (!playerBoard.isWithinboard(mouseGridY, selectedShip)) {
+                selectedShip.startPos[1] = 10 - selectedShip.size;
             }
-        // }
+            playerBoard.placeShip(selectedShip);
+        }
         gameView.renderBoard(playerBoard.board, 'board');
     }
 });
 
 // capture temporary ship placement
-document.getElementById('board').addEventListener('click', event => {
-    selectedShip = '';
-    playerBoard.tempBoard = playerBoard.board;
-    // console.log(playerBoard.tempBoard);
-})
+// document.getElementById('board').addEventListener('click', event => {
+//     // selectedShip = '';
+//     playerBoard.tempBoard = playerBoard.board;
+//     console.log(playerBoard.getShip(selectedShipType));
+// })
 
 // create ship object and store in player ships
 //document.getElementById('board').addEventListener('click', () => {
@@ -199,9 +198,10 @@ enemyBoard.createBlankBoard();
 // enemyBoard.randomlyPlaceShips();
 gameView.renderBoard(enemyBoard.board, 'board');
 gameView.renderShipList(enemyBoard.ships);
+console.log(enemyBoard.board);
 
 playerBoard.createBlankBoard();
-playerBoard.tempBoard = playerBoard.board;
+// playerBoard.tempBoard = playerBoard.board;
 gameView.renderBoard(playerBoard.board, 'player-board')
 
 // gameView.renderPlayerBoard(playerBoard);

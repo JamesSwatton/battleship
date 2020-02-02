@@ -1,8 +1,6 @@
 const Board = {
     _board: [],
 
-    _tempBoard: [],
-
     _ships : [
         {type: 'carrier', size: 5, hits: 0},
         {type: 'battleship', size: 4, hits: 0},
@@ -11,12 +9,10 @@ const Board = {
         {type: 'destroyer', size: 2, hits: 0},
     ],
 
+    overlap: false,
+
     get board() {
         return this._board;
-    },
-
-    get tempBoard() {
-        return this._tempBoard;
     },
 
     get ships() {
@@ -25,10 +21,6 @@ const Board = {
 
     set board(board) {
         this._board = board;
-    },
-
-    set tempBoard(board) {
-        this._tempBoard = board;
     },
 
     getShip(shipType) {
@@ -69,10 +61,10 @@ const Board = {
         return (xOrY + ship.size) <= 10;
     },
 
-    _shipCanBePlaced(x, y, ship, orientation) {
+    _shipCanBePlaced(x, y, ship) {
         let possiblePlacementPos = [];
 
-        if (orientation === 'horizontal') {
+        if (ship.orientation === 'horizontal') {
             if (this.isWithinboard(x, ship)) {
                 for (let i = 0; i < ship.size; i ++) {
                     let posX = x + i;
@@ -81,7 +73,7 @@ const Board = {
             } else {
                 return false;
             }
-        } else if (orientation === 'vertical') {
+        } else if (ship.orientation === 'vertical') {
             if (this.isWithinboard(y, ship)) {
                 for (let i = 0; i < ship.size; i ++) {
                     let posY = y + i;
@@ -94,11 +86,11 @@ const Board = {
                 return possiblePlacementPos.every(pos => pos == '~');
     },
 
-    _calcStartPositions(ship, orientation) {
+    _calcStartPositions(ship) {
         let startPositions = [];
         for (let y = 0; y < 10; y++) {
             for (let x = 0; x < 10; x++) {
-                if (this._shipCanBePlaced(x, y, ship, orientation)) {
+                if (this._shipCanBePlaced(x, y, ship)) {
                     startPositions.push([y, x]);
                 }
             }
@@ -111,27 +103,46 @@ const Board = {
         let randStrtPos = startPositions[randIndex]; 
         let y = randStrtPos[0];
         let x = randStrtPos[1];
-        return [y, x];
+        return [x, y];
     }, 
 
-    placeShip(startX, startY, orientation, ship) {
-        if (orientation === 'horizontal') {
-            for (let x = startX; x < (startX + ship.size); x++) {
-                this._board[startY][x] = ship.type;
+    placeShip(ship) {
+        this.overlap = false;
+        if (ship.orientation === 'horizontal') {
+            for (let x = ship.startPos[0]; x < (ship.startPos[0] + ship.size); x++) {
+                if (this._board[ship.startPos[1]][x] !== '~'
+                    && this._board[ship.startPos[1]][x] !== ship.type) {
+                    this._board[ship.startPos[1]][x] = '!';
+                    this.overlap = true;
+                } else {
+                    this._board[ship.startPos[1]][x] = ship.type;
+                }
             }
-        } else if (orientation === 'vertical') {
-            for (let y = startY; y < (startY + ship.size); y++) {
-                this._board[y][startX] = ship.type;
+        } else if (ship.orientation === 'vertical') {
+            for (let y = ship.startPos[1]; y < (ship.startPos[1] + ship.size); y++) {
+                if (this._board[y][ship.startPos[0]] !== '~'
+                    &&this._board[y][ship.startPos[0]] !== ship.type) {
+                    this._board[y][ship.startPos[0]] = '!';
+                    this.overlap = true;
+                } else {
+                    this._board[y][ship.startPos[0]] = ship.type;
+                }
             }
         }
     },
 
+    randomlyPlaceShip(ship) {
+        let randOrientation = this._horizonatalOrVertical();
+        ship.orientation = randOrientation;
+        let startPositions = this._calcStartPositions(ship)
+        let randStrtPos = this._selectRndStartPosition(startPositions);
+        ship.startPos = randStrtPos;
+        this.placeShip(ship);
+    },
+
     randomlyPlaceShips() {
         this._ships.forEach(ship => {
-            let randOrientation = this._horizonatalOrVertical();
-            let startPositions = this._calcStartPositions(ship, randOrientation)
-            let randStrtPos = this._selectRndStartPosition(startPositions);
-            this.placeShip(randStrtPos[1], randStrtPos[0], randOrientation, ship);
+            this.randomlyPlaceShip(ship);
         })
     },
 };
