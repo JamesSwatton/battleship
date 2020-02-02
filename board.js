@@ -37,15 +37,8 @@ const Board = {
         }
     },
 
-    // TODO: work out how to not make this confusing as it's potentially
-    // taking in a 'ships' constructed in a different way. Due to player
-    // selecting the loctions that each ship will be placed
-    placeShips(ships) {
-        ships.forEach(ship => {
-            ship.positions.forEach(pos => {;
-                this._board[pos[0]][pos[1]] = ship.type;
-            })
-        })
+    hasPlacedAllShips() {
+        return this._ships.every(ship => ship.startPos);
     },
 
     _horizonatalOrVertical() {

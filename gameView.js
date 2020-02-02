@@ -27,7 +27,7 @@ const gameView = {
             shipItem.className = 'ship-item';
             shipItem.id = ship.type;
             const shipText = document.createElement('p')
-            // shipText.id = ship;
+            shipText.id = `${ship.type}-text`;
             shipText.textContent = ship.type;
             shipItem.appendChild(shipText);
             const shipGrid = document.createElement('div');

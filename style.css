@@ -8,6 +8,12 @@ p {
     background-color: white;
 }
 
+#heading {
+    width: var(--width);
+    display: flex;
+    position: absolute;
+}
+
 #game-container {
     display: grid;
     grid-template-columns: 75% 25%;
@@ -28,6 +34,10 @@ p {
     border: 1px solid white;
 }
 
+#board:hover {
+    cursor: pointer;
+}
+
 #ship-list {
     position: relative;
     grid-area: B;
@@ -40,8 +50,11 @@ p {
 }
 
 #reset-ready {
-    position: absolute;
-    bottom: 0;
+    /* position: absolute; */
+    /* bottom: 0; */
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 40px;
 }
 
 #player-board {
@@ -54,22 +67,48 @@ p {
 
 .ship-item {
     /* display: flex; */
-    color: black;
+    color: blue;
 }
 
 .ship-grid {
+    /* background-color: blue; */
     display: inline-flex;
     margin: 5px 0px;
 }
 
+#reset:hover {
+    background-color: lightcoral;
+}
+
+#reset:active {
+    background-color: white;
+    color: lightcoral;
+}
+
+#ready:hover {
+    background-color: lightblue;
+}
+
+#ready:active {
+    background-color: white;
+    color: lightblue;
+}
 .ship-grid:hover {
-    background-color: lightgray;
+    background-color: lightblue;
     cursor: pointer;
+}
+
+.ship-grid:active {
+    background-color: white;
 }
 
 .ship-grid .grid {
     width: 19px;
     height: 19px;
+}
+
+.clicked {
+    background-color: lightblue;
 }
 
 .grid {
@@ -81,16 +120,28 @@ p {
     border: 1px solid white;
 }
 
+.water:hover {
+    background: rgba(00, 00, 00, 0.3);
+}
+
+.water:active {
+    background-color: lightblue;
+}
+
 .ship {
-    background-color: lightgray;
+    background-color: lightblue;
+}
+
+.ship:active {
+    background-color: white;
 }
 
 .hit {
-    background-color: red;
+    background-color: lightcoral;
 }
 
 .overlap {
-    background-color: red;
+    background-color: lightcoral;
 }
 
 .button {
@@ -98,4 +149,14 @@ p {
     align-items: center;
     justify-content: center;
 }
+
+.button:hover {
+    cursor: pointer;
+    /* color: blue; */
+}
+
+.button:active {
+    background: lightblue;
+}
+
 
