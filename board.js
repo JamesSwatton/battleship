@@ -31,6 +31,9 @@ const Board = {
         this._tempBoard = board;
     },
 
+    getShip(shipType) {
+        return this._ships.find(ship => ship.type === shipType);
+    },
 
     createBlankBoard() {
         // this._board = [];

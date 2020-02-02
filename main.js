@@ -1,6 +1,6 @@
 const enemyBoard = Object.create(Board);
 const playerBoard = Object.create(Board);
-// let gameState = 'placement';
+let gameState = 'placement';
 
 // let playerPlacement = true;
 let playerShips = [];
@@ -14,18 +14,19 @@ let selectedOrientation = 'horizontal';
 // select ship to place 
 document.querySelector('#enemy-ship-list').addEventListener('click', event => {
     selectedShipType = event.target.parentElement.parentElement.id;
-    selectedShip = playerBoard.ships[selectedShipType];
+    selectedShip = playerBoard.getShip(selectedShipType);
 }) 
 
 // display ship at mouse location 
 document.querySelector('#board').addEventListener('mouseover', event => {
-    if (gameState === 'placement') {
+    if (gameState === 'placement' && selectedShip) {
         const mouseGridPos = event.target.id.split('-');
         let mouseGridX = +mouseGridPos[1];
         let mouseGridY = +mouseGridPos[0];
 
         playerBoard.createBlankBoard();
         playerBoard.board = playerBoard.tempBoard;
+        // console.log(playerBoard.tempBoard);
         // placePlayerShips();
         if (selectedOrientation === 'horizontal') {
             if (!playerBoard.isWithinboard(mouseGridX, selectedShip)) {
@@ -62,9 +63,9 @@ document.querySelector('#board').addEventListener('mouseover', event => {
 
 // capture temporary ship placement
 document.getElementById('board').addEventListener('click', event => {
-    console.log('hi')
-    console.log(playerBoard.board);
+    selectedShip = '';
     playerBoard.tempBoard = playerBoard.board;
+    // console.log(playerBoard.tempBoard);
 })
 
 // create ship object and store in player ships
@@ -195,12 +196,12 @@ document.addEventListener('keydown', event => {
 
 // createPlayerBoard();
 enemyBoard.createBlankBoard();
-enemyBoard.randomlyPlaceShips();
+// enemyBoard.randomlyPlaceShips();
 gameView.renderBoard(enemyBoard.board, 'board');
 gameView.renderShipList(enemyBoard.ships);
 
 playerBoard.createBlankBoard();
-// playerBoard.tempBoard = playerBoard.board;
+playerBoard.tempBoard = playerBoard.board;
 gameView.renderBoard(playerBoard.board, 'player-board')
 
 // gameView.renderPlayerBoard(playerBoard);
